@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Server is ready");
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(PORT, () => {
   connectMongoDB();

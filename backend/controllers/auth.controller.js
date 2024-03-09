@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export async function signup(req, res) {
   try {
@@ -11,27 +12,30 @@ export async function signup(req, res) {
     }
 
     // check if username already taken
-    const alreadyUser = User.findOne({ userName });
+    const alreadyUser = await User.findOne({ userName });
     if (alreadyUser) {
       return res.status(400).json({ error: "Username already in use" });
     }
 
-    // Hash Password
-    const passwordHash = bcrypt(password, 16);
+    //  Hash Password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     // Generating avatar image
-    const boyImage = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const girlImage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    const boyImage = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
+    const girlImage = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
     //Create User
 
-    const newUser = User.create({
+    const newUser = await User.create({
       fullName,
       userName,
-      passwordHash,
+      password: hashedPassword,
       gender,
       profilePic: gender === "male" ? boyImage : girlImage,
     });
+
+    generateTokenAndSetCookie(newUser._id, res);
 
     await newUser.save();
 
@@ -44,14 +48,54 @@ export async function signup(req, res) {
       },
     });
   } catch (error) {
+    console.log("We had an error, ", error.message);
     res.status(500).json({ message: "An Error Occured" });
   }
 }
 
-export function login(req, res) {
-  res.send("Login");
+export async function login(req, res) {
+  try {
+    //Get Username and password
+    const { userName, password } = req.body;
+
+    //Check if there is a user with that username
+    const currentUser = await User.findOne({ userName });
+
+    //check if password matches the one of the user
+    const isPasswordCorrect = bcrypt.compare(
+      password,
+      currentUser.password || ""
+    );
+
+    //If no user r password dont match
+    if (!currentUser || !isPasswordCorrect) {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    //Generate token
+    generateTokenAndSetCookie(currentUser._id, res);
+
+    //send responce
+    res.status(200).json({
+      response: {
+        _id: currentUser._id,
+        firstName: currentUser.userName,
+        userName: currentUser.userName,
+        profilePic: currentUser.profilePic,
+      },
+    });
+  } catch (error) {
+    console.log("We had an error, ", error.message);
+    res.status(500).json({ message: "An Error Occured" });
+  }
 }
 
 export function logout(req, res) {
-  res.send("Logout");
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.log("We had an error, ", error.message);
+    res.status(500).json({ message: "An Error Occured" });
+  }
 }
