@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import usersRoutes from "./routes/user.routes.js";
 import connectMongoDB from "./db/connectMongoDB.js";
 
 // Consts setups
@@ -24,6 +25,9 @@ app.use("/api/auth", authRoutes);
 
 // Messages
 app.use("/api/messages", messageRoutes);
+
+// Users
+app.use("/api/users", usersRoutes);
 
 //App Listening
 app.listen(PORT, () => {
