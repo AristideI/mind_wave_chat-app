@@ -1,20 +1,21 @@
-import Message from "./Message";
 import NotSelected from "./NotSelected";
 import useConversation from "../../zustand/useConversation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSendMessage from "../../hooks/useSendMessages";
 import toast from "react-hot-toast";
 import Loading from "react-loading";
 import useGetMessages from "../../hooks/useGetMessages";
-import MessageSkeleton from "../skeleton/MessageSkeleton";
+import MessagesSection from "./MessagesSection";
 
 export default function Chat() {
   const [currentMessage, setCurrentMessage] = useState("");
   const { isLoading, sendMessage } = useSendMessage();
   const { selectedConversation, setSelectedConversation } = useConversation();
   const { isGettingMessages, messages } = useGetMessages();
+  const lastMessageRef = useRef(null);
 
   useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     return () => setSelectedConversation(null);
   }, [setSelectedConversation]);
 
@@ -32,19 +33,10 @@ export default function Chat() {
       <section className="w-full h-[10vh] bg-bla-300 border-b border-purple-200/20 px-10 py-1 md:px-6 sm:px-2">
         <Header conversation={selectedConversation} />
       </section>
-      <section className="w-full h-[80vh] px-10 md:px-6 sm:px-2 overflow-y-auto custom-scroller flex flex-col justify-end">
-        {isGettingMessages ? (
-          [...Array(19)].map((_, ind) => <MessageSkeleton key={ind} />)
-        ) : messages.length === 0 ? (
-          <div className="text-center w-full h-full grid place-content-center">
-            Send message to start conversation
-          </div>
-        ) : (
-          messages.map((message, ind) => (
-            <Message key={ind} message={message} />
-          ))
-        )}
-      </section>
+      <MessagesSection
+        isGettingMessages={isGettingMessages}
+        messages={messages}
+      />
       <section className="w-full h-[10vh] bg-bla-300 border-t border-pup-100/20 flex flex-col justify-center px-10 md:px-6 sm:px-2">
         <form
           className="w-full flex justify-between gap-2 items-center"
