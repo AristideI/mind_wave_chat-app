@@ -42,14 +42,14 @@ export async function signup(req, res) {
     res.status(201).json({
       response: {
         _id: newUser._id,
-        firstName: (await newUser).userName,
+        fullName: (await newUser).fullName,
         userName: (await newUser).userName,
         profilePic: (await newUser).profilePic,
       },
     });
   } catch (error) {
     console.log("We had an error, ", error.message);
-    res.status(500).json({ message: "An Error Occured" });
+    res.status(500).json({ error: "An Error Occured" });
   }
 }
 
@@ -69,7 +69,7 @@ export async function login(req, res) {
 
     //If no user r password dont match
     if (!currentUser || !isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid username or password" });
     }
 
     //Generate token
@@ -86,7 +86,7 @@ export async function login(req, res) {
     });
   } catch (error) {
     console.log("We had an error, ", error.message);
-    res.status(500).json({ message: "An Error Occured" });
+    res.status(500).json({ error: "An Error Occured" });
   }
 }
 
@@ -96,6 +96,6 @@ export function logout(req, res) {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("We had an error, ", error.message);
-    res.status(500).json({ message: "An Error Occured" });
+    res.status(500).json({ error: "An Error Occured" });
   }
 }

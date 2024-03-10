@@ -5,14 +5,17 @@ import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import usersRoutes from "./routes/user.routes.js";
 import connectMongoDB from "./db/connectMongoDB.js";
+import cors from "cors";
 
 // Consts setups
 const PORT = process.env.PORT || 5000;
 const app = express();
 
 // Configurations ans middlewares
+app.use(cors());
 dotenv.config();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
