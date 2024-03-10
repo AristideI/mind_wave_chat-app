@@ -2,6 +2,7 @@ import Loading from "react-loading";
 import useLogout from "../../hooks/useLogout";
 import User from "./User";
 import useGetConversation from "../../hooks/useGetConversations";
+import { getEmoji } from "../../utils/generateEmoji";
 
 export default function Menu() {
   const { isLoading, conversations } = useGetConversation();
@@ -43,15 +44,9 @@ export default function Menu() {
         </div>
       ) : (
         <section className="h-[70vh]  w-full overflow-y-auto custom-scroller">
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
+          {conversations.map((conv, ind) => (
+            <User key={ind} conversation={conv} emoji={getEmoji()} />
+          ))}
         </section>
       )}
 
