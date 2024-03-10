@@ -30,6 +30,8 @@ export default function useSignup() {
       if (currentUser.error) {
         throw new Error(currentUser.error);
       }
+
+      return currentUser;
     } catch (error) {
       toast.error("System Error, Try again");
       setIsLoading(false);
