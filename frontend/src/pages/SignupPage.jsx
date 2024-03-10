@@ -10,7 +10,7 @@ export default function SignupPage() {
         alt="login page icon"
       />
       <section className="w-1/3  bg-pup-200/10 rounded-2xl p-4 border border-pup-100/70 flex flex-col justify-around items-center">
-        <p className="font-bold font-serif text-xl text-center">Welcome Back</p>
+        <p className="font-bold font-serif text-xl text-center">Get Started</p>
         <SignupForm />
         <p className="text-center">
           Already have an account?{" "}

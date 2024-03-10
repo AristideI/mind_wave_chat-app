@@ -9,6 +9,7 @@ import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AuthLayout from "./components/AuthLayout";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const route = createBrowserRouter(
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <div>
       <RouterProvider router={route} />
+      <Toaster />
     </div>
   );
 }

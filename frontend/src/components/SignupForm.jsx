@@ -1,14 +1,32 @@
 import { useState } from "react";
+import useSignup from "../hooks/useSignup";
+import { useNavigate } from "react-router-dom";
+import Loading from "react-loading";
 
 export default function SignupForm() {
+  const navigate = useNavigate();
+  const { isLoading, signup } = useSignup();
   const [userInfo, setUserInfo] = useState({
     fullName: "",
     userName: "",
     password: "",
     gender: "male",
   });
-  function handleFormChange() {}
-  function handleFormSubmit() {}
+
+  function handleFormChange(e) {
+    setUserInfo((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  }
+
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const user = await signup(userInfo);
+    if (user) {
+      navigate("/login");
+    }
+  }
+
   return (
     <form
       className="flex flex-col gap-6 w-4/5 mb-2"
@@ -41,7 +59,7 @@ export default function SignupForm() {
         <input
           className="py-1 px-4 rounded-xl bg-transparent outline-none border border-pup-100"
           type="password"
-          name="userName"
+          name="password"
           value={userInfo.password}
           onChange={handleFormChange}
           required
@@ -69,8 +87,17 @@ export default function SignupForm() {
           </option>
         </select>
       </label>
-      <button className="bg-pup-100 text-black text-xl py-1 rounded-xl font-semibold">
-        Login
+      <button className="bg-pup-100 text-black text-xl py-1 rounded-xl font-semibold grid place-content-center">
+        {isLoading ? (
+          <Loading
+            height={30}
+            width={30}
+            type="spinningBubbles"
+            color="#000000"
+          />
+        ) : (
+          "Signup"
+        )}
       </button>
     </form>
   );
