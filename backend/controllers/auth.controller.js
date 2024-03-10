@@ -77,7 +77,7 @@ export async function login(req, res) {
     res.status(200).json({
       response: {
         _id: currentUser._id,
-        firstName: currentUser.userName,
+        fullName: currentUser.fullName,
         userName: currentUser.userName,
         profilePic: currentUser.profilePic,
         token,
