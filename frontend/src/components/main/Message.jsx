@@ -8,7 +8,6 @@ export default function Message({ message }) {
   const { selectedConversation } = useConversation();
 
   const isUserSender = currentUser._id === message.senderId;
-  console.log(isUserSender);
 
   return (
     <div
