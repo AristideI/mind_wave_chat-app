@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import generateTokenAndSetCookie from "../utils/generateToken.js";
+import generateToken from "../utils/generateToken.js";
 
 export async function signup(req, res) {
   try {
@@ -34,8 +34,6 @@ export async function signup(req, res) {
       gender,
       profilePic: gender === "male" ? boyImage : girlImage,
     });
-
-    generateTokenAndSetCookie(newUser._id, res);
 
     await newUser.save();
 
@@ -73,7 +71,7 @@ export async function login(req, res) {
     }
 
     //Generate token
-    generateTokenAndSetCookie(currentUser._id, res);
+    const token = generateToken(currentUser._id);
 
     //send responce
     res.status(200).json({
@@ -82,6 +80,7 @@ export async function login(req, res) {
         firstName: currentUser.userName,
         userName: currentUser.userName,
         profilePic: currentUser.profilePic,
+        token,
       },
     });
   } catch (error) {

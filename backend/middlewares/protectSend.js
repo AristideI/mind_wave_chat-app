@@ -3,7 +3,17 @@ import User from "../models/user.model.js";
 
 export async function protectSendRoute(req, res, next) {
   try {
-    const token = req.cookies.jwt;
+    const authHeader = req.headers["authorization"];
+
+    // Check if Authorization header is present
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorized - No bearer token provided" });
+    }
+
+    // Extract the token from the Authorization header
+    const token = authHeader.split(" ")[1];
 
     // check if there is token
     if (!token) {

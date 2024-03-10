@@ -29,7 +29,11 @@ export default function useLogin() {
         throw new Error(currentUser.error);
       }
       setIsLoading(false);
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      localStorage.setItem("currentUser", JSON.stringify(currentUser.response));
+      localStorage.setItem(
+        "chatToken",
+        JSON.stringify(currentUser.response.token)
+      );
       setAuthUser(currentUser);
 
       return currentUser;
