@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function NotFound() {
   return (
-    <article className="bg-mainYellow h-screen w-full flex flex-col items-center gap-8 text-center px-6">
+    <article className="bg-pup-200 h-screen w-full flex flex-col items-center gap-8 text-center px-6 text-black">
       <img
         src="https://cdn.rawgit.com/ahmedhosna95/upload/1731955f/sad404.svg"
         alt="404"
