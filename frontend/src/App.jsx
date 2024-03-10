@@ -18,7 +18,10 @@ export default function App() {
   const route = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={authUser ? <MainPage /> : <Navigate to="/" />} />
+        <Route
+          index
+          element={authUser ? <MainPage /> : <Navigate to="/login" />}
+        />
         <Route element={authUser ? <Navigate to="/" /> : <AuthLayout />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />

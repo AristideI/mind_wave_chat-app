@@ -1,6 +1,9 @@
+import Loading from "react-loading";
+import useLogout from "../../hooks/useLogout";
 import User from "./User";
 
 export default function Menu() {
+  const { isLoading, logout } = useLogout();
   return (
     <article className="p-4 flex flex-col gap-4">
       <section className="flex gap-5 items-center">
@@ -37,8 +40,20 @@ export default function Menu() {
         <User />
         <User />
       </section>
-      <button className="bg-pup-200 text-pup-50 text-lg font-semibold py-1 rounded-xl">
-        Logout
+      <button
+        className="bg-pup-200 text-pup-50 text-lg font-semibold py-1 rounded-xl"
+        onClick={logout}
+      >
+        {isLoading ? (
+          <Loading
+            height={30}
+            width={30}
+            type="spinningBubbles"
+            color="#000000"
+          />
+        ) : (
+          "Logout"
+        )}
       </button>
     </article>
   );

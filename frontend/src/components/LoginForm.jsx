@@ -55,7 +55,7 @@ export default function LoginForm() {
             color="#000000"
           />
         ) : (
-          "Signup"
+          "Login"
         )}
       </button>
     </form>

@@ -25,6 +25,9 @@ export default function useLogin() {
         }),
       });
       const currentUser = await response.json();
+      if (currentUser.error) {
+        throw new Error(currentUser.error);
+      }
       setIsLoading(false);
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
       setAuthUser(currentUser);
