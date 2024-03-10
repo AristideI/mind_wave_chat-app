@@ -36,13 +36,10 @@ export default function Menu() {
         <User />
         <User />
         <User />
-        <User />
-        <User />
-        <User />
-        <User />
-        <User />
-        <User />
       </section>
+      <button className="bg-pup-200 text-pup-50 text-lg font-semibold py-1 rounded-xl">
+        Logout
+      </button>
     </article>
   );
 }

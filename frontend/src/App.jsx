@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -10,13 +11,15 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AuthLayout from "./components/AuthLayout";
 import { Toaster } from "react-hot-toast";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function App() {
+  const { authUser } = useAuthContext();
   const route = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={<MainPage />} />
-        <Route element={<AuthLayout />}>
+        <Route index element={authUser ? <MainPage /> : <Navigate to="/" />} />
+        <Route element={authUser ? <Navigate to="/" /> : <AuthLayout />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
         </Route>

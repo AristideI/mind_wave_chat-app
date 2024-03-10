@@ -1,8 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { apiUrl } from "../../api";
+import { useAuthContext } from "../../context/AuthContext";
 
 export default function useLogin() {
+  const { setAuthUser } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
 
   async function login({ userName, password }) {
@@ -12,7 +14,7 @@ export default function useLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/api/auth/login`, {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -24,6 +26,9 @@ export default function useLogin() {
       });
       const currentUser = await response.json();
       setIsLoading(false);
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      setAuthUser(currentUser);
+
       return currentUser;
     } catch (error) {
       toast.error("System Error, Try again");

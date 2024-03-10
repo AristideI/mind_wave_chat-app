@@ -12,7 +12,7 @@ export default function useSignup() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/api/auth/signup`, {
+      const response = await fetch(`${apiUrl}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,9 @@ export default function useSignup() {
       });
       const currentUser = await response.json();
       setIsLoading(false);
-      return currentUser;
+      if (currentUser.error) {
+        throw new Error(currentUser.error);
+      }
     } catch (error) {
       toast.error("System Error, Try again");
       setIsLoading(false);

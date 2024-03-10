@@ -17,11 +17,11 @@ export default function LoginForm() {
   async function handleFormSubmit(e) {
     e.preventDefault();
     const user = await login(userInfo);
-    console.log(user);
     if (user) {
       navigate("/");
     }
   }
+
   return (
     <form className="flex flex-col gap-6 w-4/5" onSubmit={handleFormSubmit}>
       <label className="flex flex-col w-full gap-1 text-lg">
