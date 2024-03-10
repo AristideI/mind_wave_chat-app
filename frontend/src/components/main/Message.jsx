@@ -1,22 +1,63 @@
-export default function Message() {
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import useConversation from "../../zustand/useConversation";
+dayjs.extend(relativeTime);
+
+export default function Message({ message }) {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const { selectedConversation } = useConversation();
+
+  const isUserSender = currentUser._id === message.senderId;
+  console.log(isUserSender);
+
   return (
-    <div className="chat chat-start">
+    <div
+      className={`${
+        isUserSender ? "chat-end" : "chat-start"
+      } chat chat-start mb-4`}
+    >
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
             alt="Tailwind CSS chat bubble component"
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            src={
+              isUserSender
+                ? currentUser.profilePic
+                : selectedConversation.profilePic
+            }
           />
         </div>
       </div>
-      <div className="chat-header flex items-end gap-4 mb-1">
-        <p className="text-xs opacity-50">12:46</p>
-        <p className="font-semibold text-[17px]">Aristide Isingizwe</p>
-      </div>
-      <div className="chat-bubble">
-        I hate you! very much and th e we devided to go there for lungch and we
-        fuckec each other after the party but wait and then we continue adding
-        other text to check how it behaves
+      {isUserSender ? (
+        <div className="chat-header flex items-end gap-4 mb-2">
+          <p className="text-xs opacity-50">
+            {dayjs(message.createdAt).fromNow()}
+          </p>
+          <p className="font-semibold text-[17px]">
+            {isUserSender
+              ? currentUser.fullName
+              : selectedConversation.fullName}
+          </p>
+        </div>
+      ) : (
+        <div className="chat-header flex items-end gap-4 mb-1">
+          <p className="font-semibold text-[17px]">
+            {isUserSender
+              ? currentUser.fullName
+              : selectedConversation.fullName}
+          </p>
+          <p className="text-xs opacity-50">
+            {dayjs(message.createdAt).fromNow()}
+          </p>
+        </div>
+      )}
+
+      <div
+        className={`${
+          isUserSender ? "bg-pup-200" : "bg-bla-100"
+        } chat-bubble text-pup-50`}
+      >
+        {message.message}
       </div>
     </div>
   );

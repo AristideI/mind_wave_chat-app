@@ -6,7 +6,6 @@ import { getEmoji } from "../../utils/generateEmoji";
 
 export default function Menu() {
   const { isLoading, conversations } = useGetConversation();
-  console.log(conversations);
   const { isLoadings, logout } = useLogout();
   return (
     <article className="p-4 flex flex-col gap-4">
