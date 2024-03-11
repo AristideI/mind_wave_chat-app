@@ -6,10 +6,10 @@ import messageRoutes from "./routes/message.routes.js";
 import usersRoutes from "./routes/user.routes.js";
 import connectMongoDB from "./db/connectMongoDB.js";
 import cors from "cors";
+import { app, server } from "./socket/socket.js";
 
 // Consts setups
 const PORT = process.env.PORT || 5000;
-const app = express();
 
 // Configurations ans middlewares
 app.use(cors());
@@ -33,7 +33,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", usersRoutes);
 
 //App Listening
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectMongoDB();
   console.log(`Server is running on port ${PORT}`);
 });
