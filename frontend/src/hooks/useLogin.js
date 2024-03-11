@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { apiUrl } from "../../api";
-import { useAuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function useLogin() {
   const { setAuthUser } = useAuthContext();

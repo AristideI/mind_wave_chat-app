@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AuthLayout from "./components/AuthLayout";
 import { Toaster } from "react-hot-toast";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "./context/AuthContext";
 
 export default function App() {
   const { authUser } = useAuthContext();

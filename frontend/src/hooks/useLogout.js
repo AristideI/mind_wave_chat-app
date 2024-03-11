@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { apiUrl } from "../../api";
-import { useAuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 export default function useLogout() {
