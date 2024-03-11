@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -10,6 +11,7 @@ import { app, server } from "./socket/socket.js";
 
 // Consts setups
 const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
 
 // Configurations ans middlewares
 app.use(cors());
@@ -17,11 +19,6 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// Routes
-app.get("/", (req, res) => {
-  res.send("Server is ready");
-});
 
 // AUTH
 app.use("/api/auth", authRoutes);
@@ -32,6 +29,11 @@ app.use("/api/messages", messageRoutes);
 // Users
 app.use("/api/users", usersRoutes);
 
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
+});
 //App Listening
 server.listen(PORT, () => {
   connectMongoDB();
