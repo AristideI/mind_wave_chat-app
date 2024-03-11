@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Loading from "react-loading";
 import useGetMessages from "../../hooks/useGetMessages";
 import MessagesSection from "./MessagesSection";
+import useListenMessage from "../../hooks/useListenMessage";
 
 export default function Chat() {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -13,6 +14,7 @@ export default function Chat() {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const { isGettingMessages, messages } = useGetMessages();
   const lastMessageRef = useRef(null);
+  useListenMessage();
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });

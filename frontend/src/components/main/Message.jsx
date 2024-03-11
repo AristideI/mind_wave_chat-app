@@ -8,6 +8,7 @@ export default function Message({ message }) {
   const { selectedConversation } = useConversation();
 
   const isUserSender = currentUser._id === message.senderId;
+  const shouldShake = message.shouldShake ? true : false;
 
   return (
     <div
@@ -54,7 +55,7 @@ export default function Message({ message }) {
       <div
         className={`${
           isUserSender ? "bg-pup-200" : "bg-bla-100"
-        } chat-bubble text-pup-50`}
+        } chat-bubble text-pup-50 ${shouldShake ? "shake" : ""}`}
       >
         {message.message}
       </div>
