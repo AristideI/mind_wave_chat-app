@@ -12,13 +12,15 @@ export const io = new Server(server, {
   },
 });
 
+const userSocketMap = {};
+
 export function getRecievedSocketId(recieverId) {
   return userSocketMap[recieverId];
 }
 
-const userSocketMap = {};
 
 io.on("connection", (socket) => {
+  console.log("connected");
   const userId = socket.handshake.query.userId;
 
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
@@ -26,6 +28,15 @@ io.on("connection", (socket) => {
   if (userId) {
     userSocketMap[userId] = socket.id;
   }
+
+  socket.on("sendTyping", (data) => {
+    const recieverId = data.id;
+    if (userSocketMap.hasOwnProperty(recieverId)) {
+      io.to(userSocketMap[recieverId]).emit("receiveTyping", {
+        user: "is typing",
+      });
+    }
+  });
 
   socket.on("disconnect", () => {
     if (userId) {
